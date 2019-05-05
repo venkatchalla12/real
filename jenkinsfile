@@ -1,0 +1,45 @@
+peline
+{
+agent any
+stages
+{
+stage('pull code from scm')
+{
+steps
+{
+git 'https://github.com/venkatchalla12/cicd.git'
+}
+}
+stage('bulid docker image')
+{
+steps
+{
+dir('/var/lib/jenkins/workspace/pipeline_test')
+{
+script
+{
+sh('docker build -t venkatchalla12/devops:dockerwebapp_new .')
+}
+}
+}
+}
+stage('to push image to docker reg')
+{
+steps
+{
+withCredentials([string(credentialsId: 'dockerreg', variable: 'dockernew')])
+{
+sh "docker login -u venkatchalla12 -p ${dockernew}"
+}
+sh('docker push venkatchalla12/devops:dockerwebapp_new')
+}
+}
+stage('to deploy container into clint')
+{
+steps
+{
+ansiblePlaybook credentialsId: 'root', installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: '/etc/ansible/docker_webapp.yml'
+}
+}
+}
+}
