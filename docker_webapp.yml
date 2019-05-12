@@ -1,0 +1,16 @@
+
+---
+ - hosts: Demo
+   tasks:
+   - name: deploy docker file into clint
+     raw: docker pull venkatchalla12/devops:dockerwebapp_new
+   - name: remove existing containers
+#     raw: docker rm -f myapp
+     raw: docker-compose -f /tmp/docker-compose.yml down
+     ignore_errors: true
+   - name: cration of containers
+#     raw: docker run -dti --name myapp -p 80:80 venkatchalla12/devops:dockerwebapp_new
+     raw: docker-compose -f /tmp/docker-compose.yml up -d
+   - name: to start services
+     raw: docker exec -it myapp service nginx start 
+     ignore_errors: true

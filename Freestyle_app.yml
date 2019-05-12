@@ -1,0 +1,12 @@
+---
+- hosts: Demo
+  tasks:
+  - name: pull image from docker registry
+    raw: docker pull venkatchalla12/devops:dockerimage 
+  - name: remove existing container if it is present
+#    raw: docker rm -f myfreestyleapp 
+    raw: docker-compose -f /root/docker/containercompose.yml down
+    ignore_errors: true
+  - name: creation container 
+#    raw: docker run -dti --name myfreestyleapp -p 8080:80 venkatchalla12/devops:dockerimage  
+    raw: docker-compose -f /root/docker/containercompose.yml up -d

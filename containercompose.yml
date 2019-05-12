@@ -1,0 +1,7 @@
+version: '3.0'
+services:
+web:
+ image: venkatchalla12/devops:dockerimage
+ container_name: myfreestyleapp
+ ports:
+  - '8080:80' 
